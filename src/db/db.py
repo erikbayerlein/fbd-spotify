@@ -46,6 +46,36 @@ class DataBaseService:
         logger.info("Database connection established")
         self.__connection = conn
 
+
+    def insert(self, query):
+        cursor = self.__connection.cursor()
+        sql_query = f"INSERT INTO {query}"
+        try:
+            cursor.execute(sql_query)
+            self.__connection.commit()
+        except Exception as err:
+            self.__connection.rollback()
+            raise f"Error trying to insert into table: {err}"
+        finally:
+            cursor.close()
+
+    def search(self, query):
+        cursor = self.__connection.cursor()
+        sql_query = f"SELECT {query}"
+        try:
+            cursor.execute(sql_query)
+            rows = cursor.fetchall()
+            self.__connection.commit()
+        except Exception as err:
+            self.__connection.rollback()
+            raise f"Error trying to search: {err}"
+        finally:
+            cursor.close()
+        return rows
+
+
+# -----------------------------------------------------
+
     def insert_blobs(self, key, byte_value):
         cursor = self.__connection.cursor()
         sql_query = "INSERT INTO "+ table_name +" (nome, dados) VALUES (%s, %s)"
@@ -73,6 +103,8 @@ class DataBaseService:
             )
         finally:
             cursor.close()
+# -----------------------------------------------------
+
 
     def close_connection(self):
         self.__connection.close()
