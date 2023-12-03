@@ -19,8 +19,9 @@ class PerMusicalService:
     def show_per_music(self):
         sql_query = f"descricao FROM periodo_musical"
         rows = DataBaseService().search(sql_query)
+        print("\n --------- PERIODOS MUSICAIS ---------")
         for row in rows:
-            print(row)
+            print(row[0])
 
     def find_by_name(self, name):
         sql_query = f"id_periodo_musical FROM periodo_musical WHERE nome = '{name}'"
@@ -32,6 +33,6 @@ class PerMusicalService:
 
         new_end_date = str(input("\nDigite a nova data de termino: "))
         end_date = datetime.strptime(new_end_date, "%Y-%m-%d")
-
-        sql_query = f"periodo_musical SET data_fim = {end_date} WHERE descricao = '{per_music_descr}'"
+        
+        sql_query = f"periodo_musical SET data_fim = '{end_date}' WHERE descricao = '{per_music_descr}'"
         DataBaseService().update(sql_query)

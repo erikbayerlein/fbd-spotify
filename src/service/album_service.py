@@ -19,8 +19,11 @@ class AlbumService:
 
         if relational:
             grav = GravadoraEntity()
-            GravadoraService().add_to_db_relational(grav.id, grav.site, grav.name, grav.address, grav.phone)            
-            sql_query = f"album (id_album, id_grav, descricao, tipo_compra, preco, data_compra, data_gravacao, meio_fisico, tipo_grav_cd) VALUES ('{album.id}', '{grav.id}', '{album.descr}', '{album.purch_type}', '{album.price}', '{album.purch_date}', '{album.record_date}', '{album.enviroment}', '{album.type_cd}')"
+            GravadoraService().add_to_db_relational(grav.id, grav.site, grav.name, grav.address, grav.phone)
+            if album.enviroment == "cd":      
+                sql_query = f"album (id_album, id_grav, descricao, tipo_compra, preco, data_compra, data_gravacao, meio_fisico, tipo_grav_cd) VALUES ('{album.id}', '{grav.id}', '{album.descr}', '{album.purch_type}', '{album.price}', '{album.purch_date}', '{album.record_date}', '{album.enviroment.upper()}', '{album.type_cd}')"
+            else:
+                sql_query = f"album (id_album, id_grav, descricao, tipo_compra, preco, data_compra, data_gravacao, meio_fisico) VALUES ('{album.id}', '{grav.id}', '{album.descr}', '{album.purch_type}', '{album.price}', '{album.purch_date}', '{album.record_date}', '{album.enviroment.upper()}')"
             DataBaseService().insert(sql_query)
         else:
             GravadoraService().show_gravadoras()
@@ -34,6 +37,20 @@ class AlbumService:
 
         faixa_service.add_to_db(album.id, album.enviroment)
         
-    def show_albums():
-        sql_query = f"nome FROM album"
-        return DataBaseService.search(sql_query)
+    def show_albums(self):
+        sql_query = f"descricao FROM album"
+        rows = DataBaseService().search(sql_query)
+        print("\n --------- ALBUNS ---------")
+        for row in rows:
+            print(row[0])
+
+    def find_by_name(self, descr):
+        sql_query = f"id_album FROM album WHERE descricao = '{descr}'"
+        return DataBaseService().search(sql_query)[0][0]
+    
+    def show_faixas_in_album(self, descr):
+        sql_query = f"f.descricao FROM faixa f INNER JOIN album a ON f.id_album = a.id_album WHERE a.descricao = '{descr}'"
+        rows = DataBaseService().search(sql_query)
+        print("\n------------- ALBUM -------------")
+        for row in rows:
+            print(row[0])

@@ -21,7 +21,7 @@ def menu():
         \ \| '_ \ / _ \| __|/ /_)/ _ \ '__|
         _\ \ |_) | (_) | |_/ ___/  __/ |   
         \__/ .__/ \___/ \__\/    \___|_|   
-        |_|                             
+           |_|                             
         """)
         print("\nEscolha uma das opcoes abaixo:")
         print("\n1 - Visualizar")

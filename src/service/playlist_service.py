@@ -1,6 +1,7 @@
 from src.db.db import DataBaseService
 from src.service.faixa_service import FaixaService
 from src.entities.playlist import PlaylistEntity
+from src.service.album_service import AlbumService
 
 
 class PlaylistService:
@@ -31,20 +32,23 @@ class PlaylistService:
         DataBaseService().insert(sql_query_insert)
 
     def update(self, opt):
+        print(f"------------- PLAYLISTS -------------")
         PlaylistService().show_playlists()
 
         if opt == 1:
             playlist_name = str(input("\nDigite o nome da playlist: "))
             playlist_id = PlaylistService().find_by_name(playlist_name)
 
-            print("\n\n\n")
+            print("\n\n")
             print(f"------------- {playlist_name} -------------")
-            PlaylistService().show_faixas_in_playlist(playlist_id)
+            self.show_faixas_in_playlist(playlist_id)
 
-            print("\n\n\n")
-            print(f"------------- FAIXAS -------------")
-            FaixaService().show_faixas()
-            faixa_descr = str(input("\nDigite a descricao da faixa: "))
+            print("\n")
+            AlbumService().show_albums()
+            album_descr = str(input("\nDigite o nome do album para visualizar as faixas: "))
+            AlbumService().show_faixas_in_album(album_descr)
+
+            faixa_descr = str(input("Digite a descricao da faixa para adicionar na playlist: "))
             faixa_id = FaixaService().find_by_descr(faixa_descr)
 
             sql_query = f"faixa_playlist (id_faixa, id_playlist) VALUES ('{faixa_id}', '{playlist_id}')"
@@ -67,7 +71,7 @@ class PlaylistService:
         sql_query = f"nome FROM playlist"
         rows = DataBaseService().search(sql_query)
         for row in rows:
-            print(row)
+            print(row[0])
     
     def find_by_name(self, name):
         sql_query = f"id_playlist FROM playlist WHERE nome = '{name}'"
@@ -77,4 +81,4 @@ class PlaylistService:
         sql_query = f"f.descricao FROM faixa f INNER JOIN faixa_playlist fpl ON f.id_faixa = fpl.id_faixa WHERE fpl.id_playlist = '{playlist_id}'"
         rows = DataBaseService().search(sql_query)
         for row in rows:
-            print(row)
+            print(row[0])

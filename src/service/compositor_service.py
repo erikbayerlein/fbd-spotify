@@ -40,7 +40,7 @@ class CompositorService:
     def show_compositors(self):
         sql_query = f"nome FROM compositor"
         rows = DataBaseService().search(sql_query)
-        print("\n --------- COMPOSITORES ---------")
+        print("\n--------- COMPOSITORES ---------")
         for row in rows:
             print(row[0])
     
@@ -57,4 +57,4 @@ class CompositorService:
         death_date = datetime.strptime(new_death_date, "%Y-%m-%d")
 
         sql_query = f"compositor SET data_morte = '{death_date}' WHERE nome = '{comp_name}'"
-        DataBaseService.update(sql_query)
+        DataBaseService().update(sql_query)
