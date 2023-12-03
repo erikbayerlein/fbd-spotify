@@ -7,9 +7,9 @@ from src.service.per_musical_service import PerMusicalService
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-def update():
+def view():
     while True:
-        print("\n\n\nEscolha a opcao que voce gostaria de atualizar: ")
+        print("\n\n\nEscolha a opcao que voce gostaria de visualizar: ")
         print("1 - Playlist")
         print("2 - Data de morte de um Compositor")
         print("3 - Data de termino de um Periodo Musical") 

@@ -4,7 +4,7 @@ from datetime import datetime
 
 class PerMusicalEntity:
 
-    def __init__(self, id=None, descr=None, start_date=None, end_date=None):
+    def __init__(self):
         self.id = uuid.uuid4()
         self.descr = str(input("Digite a descricao: "))
 

@@ -1,7 +1,10 @@
 import logging
 
 from src.add import add
-from db.db import DataBaseService
+from src.update import update
+from src.view import view
+
+from src.db.db import DataBaseService
 
 
 logger = logging.getLogger()
@@ -9,7 +12,8 @@ logger.setLevel(logging.INFO)
 
 
 def menu():
-   while True:
+    db_service = DataBaseService()
+    while True:
         print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
         print("""
         __             _     ___          
@@ -23,22 +27,17 @@ def menu():
         print("\n1 - Visualizar")
         print("2 - Adicionar")
         print("3 - Atualizar")
-        print("4 - Excluir")
-        print("5 - ...")
-        print("6 - Sair")
+        print("4 - Sair")
 
         a = int(input("\n"))
 
         match a:
-            case 1: add()
+            case 1: view()
             case 2: add()
-            case 3: add()
-            case 4: add()
-            case 5: add()
-            case 6: 
-                DataBaseService.close_connection()
+            case 3: update()
+            case 4: 
+                db_service.close_connection()
                 exit()
             case _: logger.error("Opcao invalida. Tente novamente")
 
-DataBaseService.connect()
 menu()

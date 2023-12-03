@@ -1,11 +1,11 @@
 import logging
 
-from service.album_service import AlbumService
-from service.gravadora_service import GravadoraService
-from service.compositor_service import CompositorService
-from service.interprete_service import InterpreteService
-from service.playlist_service import PlaylistService
-from service.per_musical_service import PerMusicalService
+from src.service.album_service import AlbumService
+from src.service.gravadora_service import GravadoraService
+from src.service.compositor_service import CompositorService
+from src.service.interprete_service import InterpreteService
+from src.service.playlist_service import PlaylistService
+from src.service.per_musical_service import PerMusicalService
 
 
 logger = logging.getLogger()
@@ -38,25 +38,25 @@ def add():
 def add_album():
     opt = str(input("Voce gostaria de adicionar uma nova gravadora para o album? (sim/nao): ")).lower()
     if opt == "sim":
-        AlbumService.add_to_bd(True)
+        AlbumService().add_to_bd(True)
     else:
-        AlbumService.add_to_bd()
+        AlbumService().add_to_bd()
 
 def add_gravadora():
-    GravadoraService.add_to_db()
+    GravadoraService().add_to_db()
 
 def add_compositor():
     opt = str(input("Voce gostaria de adicionar um novo periodo musical para o compositor? (sim/nao): ")).lower() 
     if opt == "sim":
-        CompositorService.add_to_db(True)
+        CompositorService().add_to_db(True)
     else:
-        CompositorService.add_to_db()
+        CompositorService().add_to_db()
 
 def add_interprete():
-    InterpreteService.add_to_db()
+    InterpreteService().add_to_db()
 
 def add_per_musical():
-    PerMusicalService.add_to_db()
+    PerMusicalService().add_to_db()
 
 def add_playlist():
-    PlaylistService.add_to_db()
+    PlaylistService().add_to_db()

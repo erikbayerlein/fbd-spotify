@@ -1,4 +1,3 @@
-import os
 import logging
 
 from psycopg2 import connect
@@ -10,28 +9,11 @@ logger.setLevel(logging.INFO)
 
 class DataBaseService:
     def __init__(self):
-        pass
-
-    def connect(self):
-        db_name = os.getenv("DB_NAME")
-        if db_name is None:
-            logger.error("DB_NAME is not defined")
-
-        db_user = os.getenv("DB_USER")
-        if db_user is None:
-            logger.error("DB_USER is not defined")
-
-        db_password = os.getenv("DB_PASSWORD")
-        if db_password is None:
-            logger.error("DB_PASSWORD is not defined")
-
-        db_host = os.getenv("DB_HOST")
-        if db_host is None:
-            logger.error("DB_HOST is not defined")
-
-        db_port = os.getenv("DB_PORT")
-        if db_port is None:
-            logger.error("DB_PORT is not defined")
+        db_name = "fbd_spotify"
+        db_user = "postgres"
+        db_password = "postgres"
+        db_host = "localhost"
+        db_port = "5432"
 
         try:
             conn = connect(
@@ -41,13 +23,11 @@ class DataBaseService:
                 host=db_host,
                 port=db_port,
             )
-        except Exception as ex:
-            logger.error(
-                f"Unable to establish connection to the database: {str(ex)}"
-            )
+        except Exception as err:
+            print(err)
 
         logger.info("Database connection established")
-        self.__connection = conn 
+        self.__connection = conn
 
     def insert(self, query):
         cursor = self.__connection.cursor()
@@ -57,9 +37,10 @@ class DataBaseService:
             self.__connection.commit()
         except Exception as err:
             self.__connection.rollback()
-            raise f"Error trying to insert into table: {err}"
+            print(err)
         finally:
             cursor.close()
+            self.__connection.close()
 
     def search(self, query):
         cursor = self.__connection.cursor()
@@ -70,9 +51,10 @@ class DataBaseService:
             self.__connection.commit()
         except Exception as err:
             self.__connection.rollback()
-            raise f"Error trying to search: {err}"
+            print(err)
         finally:
             cursor.close()
+            self.__connection.close()
         return rows
 
     def delete(self, query):
@@ -86,6 +68,7 @@ class DataBaseService:
             print(err)
         finally:
             cursor.close()
+            self.__connection.close()
 
     def update(self, query):
         cursor = self.__connection.cursor()
@@ -98,36 +81,7 @@ class DataBaseService:
             print(err)
         finally:
             cursor.close()
-# -----------------------------------------------------
-
-    def insert_blobs(self, key, byte_value):
-        cursor = self.__connection.cursor()
-        sql_query = "INSERT INTO "+ table_name +" (nome, dados) VALUES (%s, %s)"
-        try:
-            cursor.execute(sql_query, (key, byte_value))
-            self.__connection.commit()
-        except Exception as e:
-            self.__connection.rollback()
-            raise DataInspectionLambdaException(
-                f"Error trying insert blobs of '{key}' - {e}"
-            )
-        finally:
-            cursor.close()
-
-    def delete_registers(self):
-        cursor = self.__connection.cursor()
-        sql_query = f"DELETE FROM {table_name}"
-        try:
-            cursor.execute(sql_query)
-            self.__connection.commit()
-        except Exception as e:
-            self.__connection.rollback()
-            raise DataInspectionLambdaException(
-                f"Error trying clean table '{table_name}' - {e}"
-            )
-        finally:
-            cursor.close()
-# -----------------------------------------------------
+            self.__connection.close()
 
     def close_connection(self):
         self.__connection.close()

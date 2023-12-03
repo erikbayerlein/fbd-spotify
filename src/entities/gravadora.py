@@ -3,7 +3,7 @@ import uuid
 
 class GravadoraEntity:
 
-    def __init__(self, id=None, name=None, site=None, address=None, phone=None):
+    def __init__(self):
         self.id = uuid.uuid4()
         self.name = str(input("\nDigite o nome: "))
         self.site = str(input("Digite o site: "))

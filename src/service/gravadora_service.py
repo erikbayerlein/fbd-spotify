@@ -1,7 +1,5 @@
-import uuid
-
-from db.db import DataBaseService
-from entities.gravadora import GravadoraEntity
+from src.db.db import DataBaseService
+from src.entities.gravadora import GravadoraEntity
 
 
 class GravadoraService:
@@ -20,14 +18,8 @@ class GravadoraService:
 
     def add_to_db_relational(self, id, site, name, ender, phones):
         db_service = DataBaseService()
-        sql_query_grav = f"gravadora \
-                        (id_grav, site, nome, ender) \
-                        VALUES \
-                        ({id}, {site}. {name}, {ender}"
+        sql_query_grav = f"gravadora (id_grav, site, nome, ender) VALUES ({id}, {site}. {name}, {ender}"
         db_service.insert(sql_query_grav)
         for phone in phones:
-            sql_query_phones = f"telefone_gravadora
-                                (telefone, id_grav)
-                                VALUES
-                                ({phone}, {id})"
+            sql_query_phones = f"telefone_gravadora (telefone, id_grav) VALUES ({phone}, {id})"
             db_service.insert(sql_query_phones)

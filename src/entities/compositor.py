@@ -1,12 +1,10 @@
 import uuid
 from datetime import datetime
 
-from service.per_musical_service import PerMusicalService
-
 
 class CompositorEntity:
 
-    def __init__(self, id=None, name=None, birth_place=None, birthday=None, death_date=None):
+    def __init__(self):
         self.id = uuid.uuid4()
         self.name = str(input("\nDigite o nome: "))
         self.birth_place = str(input("Digite o local de nascimento: "))

@@ -1,9 +1,6 @@
 import uuid
 from datetime import datetime
 
-from db.db import DataBaseService
-from service.album_service import AlbumService
-
 
 class FaixaEntity:
     def __init__(self, id_album, enviroment, num, composition_id):

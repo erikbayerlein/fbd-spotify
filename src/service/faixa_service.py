@@ -1,9 +1,9 @@
-from entities.faixa import FaixaEntity
+from src.entities.faixa import FaixaEntity
 
-from db.db import DataBaseService
-from service.compositor_service import CompositorService
-from service.type_composition_service import TypeCompositionService
-from service.interprete_service import InterpreteService
+from src.db.db import DataBaseService
+from src.service.compositor_service import CompositorService
+from src.service.type_composition_service import TypeCompositionService
+from src.service.interprete_service import InterpreteService
 
 
 class FaixaService:
@@ -13,9 +13,6 @@ class FaixaService:
     # TODO - CORRIGIR MEIO FISICO
     def add_to_db(self, id_album, album_enviroment):
         db_service = DataBaseService()
-        comp_service = CompositorService()
-        type_comp_service = TypeCompositionService()
-        interprete_service = InterpreteService()
 
         num = int(input("Identifique quantas faixas o album possui: "))
 
@@ -24,29 +21,29 @@ class FaixaService:
             if opt_compositor == "sim":
                 opt_per_musical = str(input("Voce gostaria de adicionar um novo periodo musical ao compositor? (sim/nao): "))
                 if opt_per_musical == "sim":
-                    compositor_id = comp_service.add_to_db(True)
+                    compositor_id = CompositorService().add_to_db(True)
                 else:
-                    compositor_id = comp_service.add_to_db()
+                    compositor_id = CompositorService().add_to_db()
             else:
-                comp_service.show_compositors()
+                CompositorService().show_compositors()
                 comp_name = str(input("Identifique o nome do compositor: "))
-                compositor_id = comp_service.find_by_name(comp_name)
+                compositor_id = CompositorService().find_by_name(comp_name)
 
             opt_type_comp = str(input("Voce gostaria de adicionar um novo tipo de composicao? (sim/nao): ")).lower()
             if opt_type_comp == "sim":
-                type_comp_id = type_comp_service.add_to_db()
+                type_comp_id = TypeCompositionService().add_to_db()
             else:
-                type_comp_service.show_type_compositions()
+                TypeCompositionService().show_type_compositions()
                 type_comp_descr = str(input("Identifique a descricao do tipo de composicao: "))
-                type_comp_id = type_comp_service.find_by_descr(type_comp_descr)
+                type_comp_id = TypeCompositionService().find_by_descr(type_comp_descr)
 
             opt_interpret = str(input("Voce gostaria de adicionar um novo interprete? (sim/nao): ")).lower()
             if opt_interpret == "sim":
-                interprete_id = interprete_service.add_to_db()
+                interprete_id = InterpreteService().add_to_db()
             else:
-                interprete_service.show_interpretes()
+                InterpreteService().show_interpretes()
                 interprete_name = str(input("Identifique o nome do interprete: "))
-                interprete_id = interprete_service.find_by_name(interprete_name)
+                interprete_id = InterpreteService().find_by_name(interprete_name)
 
             faixa = FaixaEntity(id_album, album_enviroment, i+1, type_comp_id)
             sql_query_faixa = f"faixa (id_faixa, id_album, id_tipo_comp, descricao, tempo_de_exec, pos_album, num_cd, num_vinil) VALUES ({faixa.id}, {faixa.id_album}, {faixa.id_composition}, {faixa.descr}, {faixa.exec_time}, {faixa.position_album}, {faixa.num_cd}, {faixa.num_vinil})"
