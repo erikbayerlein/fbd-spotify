@@ -28,10 +28,10 @@ def update_playlist():
     print("\n1 - Adicionar uma faixa a uma playlist")
     print("2 - Remover uma faixa de uma playlist")
     opt = int(input("\n"))
-    PlaylistService.update(opt)
+    PlaylistService().update(opt)
 
 def update_compositor():
-    CompositorService.update()
+    CompositorService().update()
 
 def update_per_musical():
-    PerMusicalService.update()
+    PerMusicalService().update()

@@ -14,9 +14,10 @@ class InterpreteService:
     def show_interpretes(self):
         sql_query = "nome FROM interprete"
         rows = DataBaseService().search(sql_query)
+        print("\n --------- INTERPRETES ---------")
         for row in rows:
-            print(row)
+            print(row[0])
 
     def find_by_name(self, name):
-        sql_query = f"id_interprete FROM interprete WHERE nome = {name}"
+        sql_query = f"id_interprete FROM interprete WHERE nome = '{name}'"
         return DataBaseService().search(sql_query)[0][0]

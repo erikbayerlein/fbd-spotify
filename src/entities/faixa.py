@@ -6,9 +6,9 @@ class FaixaEntity:
     def __init__(self, id_album, enviroment, num, composition_id):
         self.id = uuid.uuid4()
         print(f"\n------------- Faixa {num} -------------")
-        self.descr = str(input("Digite a descricao: "))
+        self.descr = str(input("Digite a descricao da faixa: "))
 
-        exec_time = str(input("Digite o tempo de execucao em minutos e segundos: "))
+        exec_time = str(input("Digite o tempo de execucao em minutos e segundos da faixa (min:seg): "))
         self.exec_time = datetime.strptime(exec_time, "%M:%S").time()
 
         self.position_album = num

@@ -9,7 +9,7 @@ class PlaylistService:
 
     def add_to_db(self):
         playlist = PlaylistEntity()
-        sql_query = f"playlist (id_playlist, nome, data_criacao, tempo_total_exec) VALUES ({playlist.id}, {playlist.name}, {playlist.creation_date}, {playlist.execution_time})"
+        sql_query = f"playlist (id_playlist, nome, data_criacao, tempo_total_exec) VALUES ('{playlist.id}', '{playlist.name}', '{playlist.creation_date}', '{playlist.execution_time}')"
         DataBaseService().insert(sql_query)
 
     def faixa_to_playlist(self):
@@ -27,7 +27,7 @@ class PlaylistService:
         faixa_descr = str(input("Identifique a descricao da faixa: "))
         faixa_id = FaixaService().find_by_name(faixa_descr)
 
-        sql_query_insert = f"faixa_playlist (id_faixa, id_playlist) VALUES ({faixa_id}, {playlist_id})"
+        sql_query_insert = f"faixa_playlist (id_faixa, id_playlist) VALUES ('{faixa_id}', '{playlist_id}')"
         DataBaseService().insert(sql_query_insert)
 
     def update(self, opt):
@@ -47,7 +47,7 @@ class PlaylistService:
             faixa_descr = str(input("\nDigite a descricao da faixa: "))
             faixa_id = FaixaService().find_by_descr(faixa_descr)
 
-            sql_query = f"faixa_playlist (id_faixa, id_playlist) VALUES ({faixa_id}, {playlist_id})"
+            sql_query = f"faixa_playlist (id_faixa, id_playlist) VALUES ('{faixa_id}', '{playlist_id}')"
             DataBaseService().insert(sql_query)
         else:
             playlist_name = str(input("\nDigite o nome da playlist: "))
@@ -60,7 +60,7 @@ class PlaylistService:
             faixa_descr = str(input("\nDigite a descricao da faixa: "))
             faixa_id = FaixaService().find_by_descr(faixa_descr)
 
-            sql_query = f"faixa_playlist WHERE id_faixa = {faixa_id} AND id_playlist = {playlist_id}"
+            sql_query = f"faixa_playlist WHERE id_faixa = '{faixa_id}' AND id_playlist = '{playlist_id}'"
             DataBaseService().delete(sql_query)
 
     def show_playlists(self):
@@ -70,11 +70,11 @@ class PlaylistService:
             print(row)
     
     def find_by_name(self, name):
-        sql_query = f"id_playlist FROM playlist WHERE nome = {name}"
+        sql_query = f"id_playlist FROM playlist WHERE nome = '{name}'"
         return DataBaseService().search(sql_query)[0][0]
     
     def show_faixas_in_playlist(self, playlist_id):
-        sql_query = f"f.descricao FROM faixa f INNER JOIN faixa_playlist fpl ON f.id_faixa = fpl.id_faixa WHERE fpl.id_playlist = {playlist_id}"
+        sql_query = f"f.descricao FROM faixa f INNER JOIN faixa_playlist fpl ON f.id_faixa = fpl.id_faixa WHERE fpl.id_playlist = '{playlist_id}'"
         rows = DataBaseService().search(sql_query)
         for row in rows:
             print(row)
