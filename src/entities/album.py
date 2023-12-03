@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class AlbumEntity:
-    def __init__(self, id=None, descr=None, purch_type=None, price=None, purch_date=None, record_date=None, enviroment=None, type_cd=None):
+    def __init__(self):
         self.id = uuid.uuid4()
         self.name = str(input("\nDigite o nome: "))
         self.descr = str(input("Digite a descricao: "))
@@ -19,4 +19,5 @@ class AlbumEntity:
         self.enviroment = str(input("Digite o meio fisico: ")).lower()
         if self.enviroment == "cd":
             self.type_cd = str(input("Digite o tipo de gravacao do cd: "))
-        
+        else:
+            self.type_cd = None

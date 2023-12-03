@@ -1,6 +1,7 @@
 import logging
 
 from src.add import add
+from db.db import DataBaseService
 
 
 logger = logging.getLogger()
@@ -34,9 +35,10 @@ def menu():
             case 3: add()
             case 4: add()
             case 5: add()
-            case 6: exit()
+            case 6: 
+                DataBaseService.close_connection()
+                exit()
             case _: logger.error("Opcao invalida. Tente novamente")
 
-        
-
+DataBaseService.connect()
 menu()

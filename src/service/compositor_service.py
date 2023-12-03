@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from db.db import DataBaseService
 from entities.compositor import CompositorEntity
 from service.per_musical_service import PerMusicalService
@@ -19,38 +21,37 @@ class CompositorService:
         if relational:
             per_music = PerMusicalEntity()
             per_music_service.add_to_db_relational(per_music.id, per_music.descr, per_music.start_date, per_music.end_date)
-            
-            sql_query_compositor = f"compositor (id_compositor, id_periodo_musical, \
-                                    nome, local_nasc, data_nasc, data_morte) \
-                                    VALUES \
-                                    ({compositor.id}, {per_music.id}, {compositor.name}, {compositor.birth_place}, \
-                                    {compositor.birthday}, {compositor.death_date}))"
+            sql_query_compositor = f"compositor (id_compositor, id_periodo_musical, nome, local_nasc, data_nasc, data_morte) VALUES ({compositor.id}, {per_music.id}, {compositor.name}, {compositor.birth_place}, {compositor.birthday}, {compositor.death_date}))"
             db_service.insert(sql_query_compositor)
-
         else:
             print("\n")
-            per_music_rows = per_music_service.show_per_music()
-            for row in per_music_rows:
-                print(row)
+            per_music_service.show_per_music()
 
             per_music_name = str(input("Digite o nome do periodo musical do compositor: "))
-            sql_query_get_per_music = f"* FROM periodo_musical WHERE nome = {per_music_name}"
-            per_music = db_service.search(sql_query_get_per_music)
-            id_per_music = per_music[0]
+            id_per_music = per_music_service.find_by_name(per_music_name)
 
-            sql_query_grav = f"compositor \
-                            (id_compositor, id_periodo_musical, \
-                            nome, local_nasc, \
-                            data_nasc, data_morte) \
-                            VALUES \
-                            ({compositor.id}, {id_per_music}, {compositor.name}, \
-                            {compositor.birth_place}, {compositor.birthday}, {compositor.death_date})"
+            sql_query_grav = f"compositor (id_compositor, id_periodo_musical, nome, local_nasc, data_nasc, data_morte) VALUES ({compositor.id}, {id_per_music}, {compositor.name}, {compositor.birth_place}, {compositor.birthday}, {compositor.death_date})"
             db_service.insert(sql_query_grav)
+        return compositor.id
 
-    def add_to_db_relational(self, per_musical_id):
-        return
-
-    def show_compositors():
+    def show_compositors(self):
         db_service = DataBaseService()
         sql_query = f"nome FROM compositors"
-        return db_service.search(sql_query)
+        rows = db_service.search(sql_query)
+        for row in rows:
+            print(row)
+    
+    def find_by_name(self, name):
+        db_service = DataBaseService()
+        sql_query = f"id_compositor FROM compositor WHERE nome = {name}"
+        return db_service.search(sql_query)[0][0]
+
+    def update(self):
+        CompositorService.show_compositors()
+        comp_name = str(input("\n\nIdentifique o nome do compositor: "))
+
+        new_death_date = str(input("\nDigite a nova data de morte: "))
+        death_date = datetime.strptime(new_death_date, "%Y-%m-%d")
+
+        sql_query = f"compositor SET data_morte = {death_date} WHERE nome = {comp_name}"
+        DataBaseService.update(sql_query)

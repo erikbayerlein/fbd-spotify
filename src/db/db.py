@@ -10,6 +10,9 @@ logger.setLevel(logging.INFO)
 
 class DataBaseService:
     def __init__(self):
+        pass
+
+    def connect(self):
         db_name = os.getenv("DB_NAME")
         if db_name is None:
             logger.error("DB_NAME is not defined")
@@ -44,8 +47,7 @@ class DataBaseService:
             )
 
         logger.info("Database connection established")
-        self.__connection = conn
-
+        self.__connection = conn 
 
     def insert(self, query):
         cursor = self.__connection.cursor()
@@ -73,7 +75,29 @@ class DataBaseService:
             cursor.close()
         return rows
 
+    def delete(self, query):
+        cursor = self.__connection.cursor()
+        sql_query = f"DELETE FROM {query}"
+        try:
+            cursor.execute(sql_query)
+            self.__connection.commit()
+        except Exception as err:
+            self.__connection.rollback()
+            print(err)
+        finally:
+            cursor.close()
 
+    def update(self, query):
+        cursor = self.__connection.cursor()
+        sql_query = f"UPDATE {query}"
+        try:
+            cursor.execute(sql_query)
+            self.__connection.commit()
+        except Exception as err:
+            self.__connection.rollback()
+            print(err)
+        finally:
+            cursor.close()
 # -----------------------------------------------------
 
     def insert_blobs(self, key, byte_value):
@@ -104,7 +128,6 @@ class DataBaseService:
         finally:
             cursor.close()
 # -----------------------------------------------------
-
 
     def close_connection(self):
         self.__connection.close()

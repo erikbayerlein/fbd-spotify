@@ -17,6 +17,6 @@ class CompositorEntity:
         dead = str(input("Digite se o compositor ainda esta vivo (sim/nao): "))
         if dead.lower() == "sim":
             death = str(input("Digite a data de morte: "))
-            self.death_date = datetime.strptime(death, "%Y-%m%d")
+            self.death_date = datetime.strptime(death, "%Y-%m-%d")
         else:
             self.death_date = None
