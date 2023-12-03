@@ -1,10 +1,12 @@
 import logging
 
-from entities.album import AlbumService
-from entities.gravadora import GravadoraService
-from entities.faixa import FaixaService
-from entities.compositor import CompositorService
-from entities.interprete import InterpreteService
+from service.album_service import AlbumService
+from service.gravadora_service import GravadoraService
+from service.faixa import FaixaService
+from service.compositor_service import CompositorService
+from service.interprete import InterpreteService
+from service.playlist import PlaylistService
+from service.per_musical_service import PerMusicalService
 
 
 logger = logging.getLogger()
@@ -14,22 +16,22 @@ logger.setLevel(logging.INFO)
 def add():
     while True:
         print("\n\n\nEscolha a opcao que voce gostaria de adicionar:")
-        print("\n1 - Faixa")
+        print("\n1 - Faixas")
         print("2 - Playlist")
         print("3 - Adicionar Faixa em playlist")
         print("4 - Album")
         print("5 - Gravadora")
         print("6 - Compositor")
         print("7 - Interprete")
-        print("8 - Periodo Musical")
+        print("8 - Periodo Musical") # COMO O PERIODO MUSICAL E COMPOSITOR POSSUEM RELACIONAMENTO COMPLETO, PODEMOS FAZER TUDO NO ADD_COMP
         print("9 - Voltar")
 
-        a = int(input("\n"))
+        opt = int(input("\n"))
 
-        match a:
+        match opt:
             case 1: add_faixa()
-            case 2: add()
-            case 3: add()
+            case 2: add_playlist()
+            case 3: add_faixa_to_playlist()
             case 4: add_album()
             case 5: add_gravadora()
             case 6: add_compositor()
@@ -41,13 +43,15 @@ def add():
 
 def add_album():
     ab_service = AlbumService()
-    ab_service.new_album()
-    ab_service.add_to_bd()
+    opt = str(input("Voce gostaria de adicionar uma nova gravadora para o album? (sim/nao): ")).lower()
+    if opt == "sim":
+        ab_service.add_to_bd(True)
+    else:
+        ab_service.add_to_bd()
 
 def add_gravadora():
     grav_service = GravadoraService()
-    grav_service.new_gravadora()
-    grav_service.add_to_bd()
+    grav_service.add_to_db()
 
 def add_faixa():
     f_service = FaixaService()
@@ -56,8 +60,11 @@ def add_faixa():
 
 def add_compositor():
     comp_service = CompositorService()
-    comp_service.new_compositor()
-    comp_service.add_to_bd()
+    opt = str(input("Voce gostaria de adicionar um novo periodo musical para o compositor? (sim/nao): ")).lower() 
+    if opt == "sim":
+        comp_service.add_to_db(True)
+    else:
+        comp_service.add_to_db()
 
 def add_interprete():
     interp_service = InterpreteService()
@@ -65,4 +72,14 @@ def add_interprete():
     interp_service.add_to_bd()
 
 def add_per_musical():
-    return
+    per_music_service = PerMusicalService()
+    per_music_service.add_to_db()
+
+def add_playlist():
+    pl_service = PlaylistService()
+    pl_service.new_playlist()
+    pl_service.add_to_bd()
+
+def add_faixa_to_playlist():
+    pl_service = PlaylistService()
+    pl_service.faixa_to_playlist()
