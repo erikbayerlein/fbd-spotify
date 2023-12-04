@@ -70,6 +70,7 @@ class PlaylistService:
     def show_playlists(self):
         sql_query = f"nome FROM playlist"
         rows = DataBaseService().search(sql_query)
+        print("\n --------- PLAYLISTS ---------")
         for row in rows:
             print(row[0])
     
@@ -80,5 +81,12 @@ class PlaylistService:
     def show_faixas_in_playlist(self, playlist_id):
         sql_query = f"f.descricao FROM faixa f INNER JOIN faixa_playlist fpl ON f.id_faixa = fpl.id_faixa WHERE fpl.id_playlist = '{playlist_id}'"
         rows = DataBaseService().search(sql_query)
+        for row in rows:
+            print(row[0])
+
+    def view_playlist_q4(self):
+        sql_query = f"pl.nome FROM playlist pl INNER JOIN faixa_playlist fp ON pl.id_playlist = fp.id_playlist INNER JOIN faixa f ON fp.id_faixa = f.id_faixa INNER JOIN tipo_composicao tc ON f.id_tipo_comp = tc.id_tipo_comp INNER JOIN faixa_compositor fc ON f.id_faixa = fc.id_faixa INNER JOIN compositor compo ON fc.id_compositor = compo.id_compositor INNER JOIN periodo_musical pm ON compo.id_periodo_musical = pm.id_periodo_musical WHERE pm.descricao = 'Barroco' AND tc.descricao = 'Concerto' AND pl.nome NOT IN (SELECT pl2.nome FROM playlist pl2 INNER JOIN faixa_playlist fp2 ON pl2.id_playlist = fp2.id_playlist INNER JOIN faixa f2 ON fp2.id_faixa = f2.id_faixa INNER JOIN tipo_composicao tc2 ON f2.id_tipo_comp = tc2.id_tipo_comp INNER JOIN faixa_compositor fc2 ON f2.id_faixa = fc2.id_faixa INNER JOIN compositor compo2 ON fc2.id_compositor = compo2.id_compositor INNER JOIN periodo_musical pm2 ON compo2.id_periodo_musical = pm2.id_periodo_musical WHERE pm2.descricao != 'Barroco' OR tc2.descricao != 'Concerto')"
+        rows = DataBaseService().search(sql_query)
+        print("\n------------- Questao 4 -------------")
         for row in rows:
             print(row[0])

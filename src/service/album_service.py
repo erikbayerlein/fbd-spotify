@@ -54,3 +54,10 @@ class AlbumService:
         print("\n------------- ALBUM -------------")
         for row in rows:
             print(row[0])
+
+    def view_album_q1(self):
+        sql_query = f"descricao FROM album WHERE album.preco > (SELECT AVG(preco) FROM album)"
+        rows = DataBaseService().search(sql_query)
+        print("\n------------- Questao 1 -------------")
+        for row in rows:
+            print(row[0])

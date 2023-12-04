@@ -24,7 +24,7 @@ class PerMusicalService:
             print(row[0])
 
     def find_by_name(self, name):
-        sql_query = f"id_periodo_musical FROM periodo_musical WHERE nome = '{name}'"
+        sql_query = f"id_periodo_musical FROM periodo_musical WHERE descricao = '{name}'"
         return DataBaseService().search(sql_query)[0][0]
     
     def update(self):

@@ -58,3 +58,11 @@ class CompositorService:
 
         sql_query = f"compositor SET data_morte = '{death_date}' WHERE nome = '{comp_name}'"
         DataBaseService().update(sql_query)
+
+    def view_compositor_q3(self):
+        sql_query = f"comp.nome, COUNT(fp.id_faixa) AS Contagem FROM compositor comp INNER JOIN faixa_compositor fc ON comp.id_compositor = fc.id_compositor INNER JOIN faixa f ON fc.id_faixa = f.id_faixa INNER JOIN faixa_playlist fp ON f.id_faixa = fp.id_faixa GROUP BY comp.nome ORDER BY Contagem DESC LIMIT 1"
+        rows = DataBaseService().search(sql_query)
+        print("\n------------- Questao 3 -------------")
+        for row in rows:
+            print("NOME | CONTAGEM")
+            print(f"{row[0]} - {row[1]}")
