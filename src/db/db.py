@@ -1,5 +1,6 @@
 import logging
 
+import pyodbc
 from psycopg2 import connect
 
 
@@ -9,20 +10,17 @@ logger.setLevel(logging.INFO)
 
 class DataBaseService:
     def __init__(self):
-        db_name = "fbd_spotify"
-        db_user = "postgres"
-        db_password = "postgres"
-        db_host = "localhost"
-        db_port = "5432"
+        db_name = "BDSpotPer2"
+        db_driver='SQL Server Native Client 11.0'
+        db_server='DESKTOP-ABLPA7D'
+        user=None,
+        password=None,
+        trusted_connection='yes'
+        paramater = f"DRIVER={db_driver};SERVER={db_server};DATABASE={db_name};UID={user};PWD={password};TRUSTED_CONNECTION={trusted_connection}"
+
 
         try:
-            conn = connect(
-                dbname=db_name,
-                user=db_user,
-                password=db_password,
-                host=db_host,
-                port=db_port,
-            )
+            conn = pyodbc.connect(paramater)
         except Exception as err:
             print(err)
 
