@@ -60,7 +60,7 @@ class CompositorService:
         DataBaseService().update(sql_query)
 
     def view_compositor_q3(self):
-        sql_query = f"comp.nome, COUNT(fp.id_faixa) AS Contagem FROM compositor comp INNER JOIN faixa_compositor fc ON comp.id_compositor = fc.id_compositor INNER JOIN faixa f ON fc.id_faixa = f.id_faixa INNER JOIN faixa_playlist fp ON f.id_faixa = fp.id_faixa GROUP BY comp.nome ORDER BY Contagem DESC LIMIT 1"
+        sql_query = f"TOP 1 comp.nome, COUNT(fp.id_faixa) AS Contagem FROM compositor comp INNER JOIN faixa_compositor fc ON comp.id_compositor = fc.id_compositor INNER JOIN faixa f ON fc.id_faixa = f.id_faixa INNER JOIN faixa_playlist fp ON f.id_faixa = fp.id_faixa GROUP BY comp.nome ORDER BY Contagem DESC"
         rows = DataBaseService().search(sql_query)
         print("\n------------- Questao 3 -------------")
         for row in rows:

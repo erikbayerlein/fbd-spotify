@@ -1,3 +1,6 @@
+## Bruno Aguiar Carneiro Silva - 542562
+## Erik Bayerlein - 537606
+
 import logging
 
 from src.add import add

@@ -19,7 +19,7 @@ def add():
         print("3 - Gravadora")
         print("4 - Compositor")
         print("5 - Interprete")
-        print("6 - Periodo Musical") # COMO O PERIODO MUSICAL E COMPOSITOR POSSUEM RELACIONAMENTO COMPLETO, PODEMOS FAZER TUDO NO ADD_COMP
+        print("6 - Periodo Musical")
         print("7 - Voltar")
 
         opt = int(input("\n"))
